@@ -1,0 +1,82 @@
+.center{
+    text-align: center;
+}
+
+.left-users-panel{
+	height: 100vh;
+	border-right: 1px solid #2a3942;
+    background-color: #0a1014;
+	width:100%;
+	padding: 10px 10px;
+	overflow: scroll;
+}
+.right-chat-window {
+	height: 100vh;
+	width:100%;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-between;
+}
+.card-title{
+	font-size: 16px;
+	padding: 0px;
+}
+.card-text {
+	font-size: 12px;
+}
+.userCard {
+	padding: 0px 5px;
+	background-color: #2a3942;
+	color: white;
+}
+.userCard-status {
+	padding: 0px 5px;
+	background-color: #2a3942;
+	color: white;
+}
+.card-body {
+	padding: 5px 5px;
+}
+
+.person-image {
+	font-size: 3em;
+	color: grey;
+	border-radius: 100%;
+	overflow: hidden;
+	background-color: white;
+	padding: 0px 5px;
+	margin-right: 5px;
+}
+.rightStatusBar{
+	padding: 0px;;
+}
+
+.chat-input-box {
+	background-color: #2a3942;
+	/* position: fixed; */
+	display: flex;
+	
+}
+
+.chat-input-box #chat-input {
+	border-radius: 0px;
+}
+.chat-btn {
+	color: white;
+}
+
+#file-chooser {
+	display: none;
+}
+.attach-icon {
+	font-size: 1.5rem;
+	color: white;
+	padding: 0px 10px;
+	cursor: pointer;
+}
+.message-window {
+	background-color: white;
+	height: 100%;
+	padding: 5px 10px;
+	overflow: auto;
+}
