@@ -64,7 +64,7 @@ const Login = (props) => {
 
             if(res) {
                 userService.doAfterLogin(res.data.token);
-                historyState.history.push('/admin/liveChat')
+                historyState.history.push('/admin/home')
 
             }
         }  catch (err) {
