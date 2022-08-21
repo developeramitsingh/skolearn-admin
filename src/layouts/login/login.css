@@ -1,0 +1,13 @@
+.loginCont {
+    height: 100vh;
+    background-color:#000;
+}
+
+.loginForm {
+    max-width: 780px;
+    margin: auto;
+    padding: 50px 60px;
+    height: 70vh;
+    border-radius: 20px;
+    background-color: #FFD81B;
+}

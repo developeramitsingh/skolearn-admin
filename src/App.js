@@ -1,23 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import Login from './layouts/login/login';
+import { useHistory, Switch, Route } from 'react-router-dom';
+import { historyState } from "./constant/global";
+import LiveChat from './layouts/liveChat/liveChat';
+import Home from './layouts/home/home';
 
-function App() {
+function App(props) { 
+  const history = useHistory()
+  console.info(history);
+
+  historyState.history = history;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+          <Switch>
+            <Route exact path ="/admin/liveChat">
+              <LiveChat/>
+            </Route>
+
+            <Route exact path ="/admin/home">
+              <Home/>
+            </Route>
+
+            <Route path ="/admin">
+              <Login/>
+            </Route>
+          </Switch>
     </div>
   );
 }
