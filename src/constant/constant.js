@@ -1,4 +1,4 @@
-export const BACKEND_URL = 'https://5240-2409-4050-dbc-56a0-cdd8-6c6e-6842-cb81.ngrok.io';
+export const BACKEND_URL = 'https://65b4-43-239-207-152.in.ngrok.io';
 export const COLORS = {
     blue: '#1E90FF',
     blueGreen: '#25B0B9',
