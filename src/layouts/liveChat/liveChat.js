@@ -25,7 +25,7 @@ const LiveChat = () => {
     ]);
 
     useEffect(() => {
-      socketRef.current = io("https://65b4-43-239-207-152.in.ngrok.io");
+      socketRef.current = io("https://f741-43-239-207-152.in.ngrok.io");
 
       socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: "Nityanand",supportUserId: 123 });
 
