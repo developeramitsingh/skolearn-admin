@@ -137,7 +137,7 @@ const LiveChat = () => {
           <Card.Body>
             <Card.Title>{user.userName}</Card.Title>
             <div className='status'>
-              <span className='status-online'></span>
+              <span className={user.offline ? 'status-offline': 'status-online'}></span>
               <span>{user.offline ? 'Offline': 'Online' }</span>
             </div>
           </Card.Body>
