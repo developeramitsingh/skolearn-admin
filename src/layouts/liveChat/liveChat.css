@@ -29,6 +29,20 @@
 	margin-bottom: 6px;
 }
 
+.status{
+	display: flex;
+	align-items: center;
+}
+
+.card-style .status-online{
+	display: inline-block;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	background-color: green;
+	color: green;
+	margin-right: 5px;
+}
 .card-title{
 	font-size: 16px;
 	padding: 0px;

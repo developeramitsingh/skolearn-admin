@@ -34,6 +34,7 @@ const Login = (props) => {
         
         const data  = {
             mobile,
+            requestType: 'login'
         }
 
         console.info('handle login', { data });
@@ -55,6 +56,7 @@ const Login = (props) => {
         
         const data  = {
             otp,
+            requestType: 'login'
         }
 
         console.info('handle verify otp', { data });

@@ -39,10 +39,51 @@ const LiveChat = () => {
       }
     }
 
+    const getUser = async () => {
+      try {
+          const user = await userService.getUser();
+
+          if (!user) {
+              return;
+          }
+
+          setState((prev) => {
+              return { ...prev, supportUserId: user._id, supportUserName: user.userName }
+          })
+      } catch (err){
+          console.error(`errror in getUser: ${err}`);
+      }
+  }
+
     useEffect(() => {
+      getUser();
       socketRef.current = io(BACKEND_URL);
 
-      socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: "Nityanand",supportUserId: 123 });
+      socketRef.current.on('newUserConnected', () => {
+        socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: state.supportUserName, supportUserId: state.supportUserId });
+        
+        //callBack("a newUserConnected");
+      });
+
+      socketRef.current.on('offlineAppUser', ({ userId }) => {
+        /* setActiveUsers(prev => {
+          return prev.map((user)=> {
+            if(userId === user?.userId){
+              user.offline = true;
+            }
+
+            return user;
+          })
+        }); */
+
+        setActiveUsers(prev => {
+          return prev.filter((user)=> {
+            return user?.userId !== userId;
+          })
+        });        
+      });
+
+      socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: state.supportUserName, supportUserId: state.supportUserId });
 
       socketRef.current.on('supportMessage', ({ userId, userName, message, time, rid}, callBack) => {
           console.info(`message recieced`, message, userId, userName);
@@ -66,7 +107,7 @@ const LiveChat = () => {
       return () => {
         socketRef.current.disconnect();
       }
-    }, [activeUsers]);
+    }, [activeUsers, state.supportUserId]);
 
     function storeMsg(e){
       const {name, value} = e.target;
@@ -79,15 +120,20 @@ const LiveChat = () => {
       let data = {msg:msg, user: "support", userId: selectedUser}
       setmessages([...messages, data]);
 
-      socketRef.current.emit('supportMessageBackend', { message: state.msg, userId: selectedUser, supportUserId: 123 })
+      socketRef.current.emit('supportMessageBackend', { message: state.msg, userId: selectedUser, supportUserId: state.supportUserId })
       setState({...state, msg:""});
     }
 
     const activeUsersList = activeUsers.map(user => {
+      console.log(user);
       return (
         <Card className={`card-style ${selectedUser === user.userId? 'selected': ''}`} key={user.userId} onClick={() => setSelectedUser(user.userId)}>
           <Card.Body>
             <Card.Title>{user.userName}</Card.Title>
+            <div className='status'>
+              <span className='status-online'></span>
+              <span>{user.offline ? 'Offline': 'Online' }</span>
+            </div>
           </Card.Body>
         </Card>
       )
@@ -112,6 +158,7 @@ const LiveChat = () => {
 
     return (
       <Container fluid>
+        {console.log(state)}
         <Row>
             <Col className='text-center'>
                 <h1>Live Chat</h1>
