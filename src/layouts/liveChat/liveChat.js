@@ -32,9 +32,15 @@ const LiveChat = () => {
 
       console.info({ isUser});
 
+      //user is new then add to activeUSer list
       if(!isUser.length) {
         setActiveUsers(prev => {
           return [ ...prev, { userId, userName }]
+        });
+      } else {
+        // make old user online
+        setActiveUsers(prev => {
+          return [ ...prev]?.map(usr => { if (usr.userId === userId) { usr.offline = false } return usr })
         });
       }
     }
@@ -66,7 +72,7 @@ const LiveChat = () => {
       });
 
       socketRef.current.on('offlineAppUser', ({ userId }) => {
-        /* setActiveUsers(prev => {
+        setActiveUsers(prev => {
           return prev.map((user)=> {
             if(userId === user?.userId){
               user.offline = true;
@@ -74,13 +80,13 @@ const LiveChat = () => {
 
             return user;
           })
-        }); */
+        });
 
-        setActiveUsers(prev => {
-          return prev.filter((user)=> {
-            return user?.userId !== userId;
-          })
-        });        
+        // setActiveUsers(prev => {
+        //   return prev.filter((user)=> {
+        //     return user?.userId !== userId;
+        //   })
+        // });        
       });
 
       socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: state.supportUserName, supportUserId: state.supportUserId });
