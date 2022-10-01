@@ -136,7 +136,7 @@ const LiveChat = () => {
             </div>
             <Row>
               <InputGroup className="">
-                <Form.Control name="msg" value={state.msg} onChange={storeMsg} onKeyDown={(e) => {if(e.key === 'Enter'){handleMessages(e)}}}
+                <Form.Control name="msg" value={state.msg} onChange={storeMsg} onKeyDown={(e) => {if(e.key === 'Enter' && state.msg && selectedUser){handleMessages(e)}}}
                   placeholder="Type your message"
                   aria-label="Message"
                 />
