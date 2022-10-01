@@ -15,23 +15,35 @@ const LiveChat = () => {
       msg:""
     });
     const [activeUsers, setActiveUsers] = useState([
-      {
-        userId: '1',
-        userName: 'Amit',
-      }
+      
     ]);
 
     const [messages, setmessages] = useState([
     ]);
+
+    const addActiveuser = (userId, userName) => {
+      const isUser = activeUsers.filter(elem => {
+        return elem.userId === userId
+      });
+
+      if(!isUser?.length) {
+        setActiveUsers(prev => {
+          return [ ...prev, { userId, userName }]
+        });
+      }
+    }
 
     useEffect(() => {
       socketRef.current = io(BACKEND_URL);
 
       socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: "Nityanand",supportUserId: 123 });
 
-      socketRef.current.on('supportMessage', ({ sid, userId, message, time, rid}, callBack) => {
-          console.info(`message recieced`, message, userId);
+      socketRef.current.on('supportMessage', ({ userId, userName, message, time, rid}, callBack) => {
+          console.info(`message recieced`, message, userId, userName);
           let data = {msg: message, user: "app"};
+          
+          addActiveuser(userId, userName);
+
           setmessages((prev) => {
               return [...prev, data]
           })
