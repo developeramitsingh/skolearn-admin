@@ -54,7 +54,7 @@ const LiveChat = () => {
           }
 
           setState((prev) => {
-              return { ...prev, supportUserId: user._id, supportUserName: user.userName }
+              return { ...prev, supportUserId: user._id, supportUserName: user.userName, roleKey: user.roleId?.roleKey }
           })
       } catch (err){
           console.error(`errror in getUser: ${err}`);
@@ -66,7 +66,7 @@ const LiveChat = () => {
       socketRef.current = io(BACKEND_URL);
 
       socketRef.current.on('newUserConnected', () => {
-        socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: state.supportUserName, supportUserId: state.supportUserId });
+        socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: state.supportUserName, supportUserId: state.supportUserId, roleKey: state.roleKey });
         
         //callBack("a newUserConnected");
       });
@@ -110,7 +110,9 @@ const LiveChat = () => {
         historyState.history.push('/admin');
       }
 
+
       return () => {
+        console.info(`-------------> clearning function disconnect`);
         socketRef.current.disconnect();
       }
     }, [activeUsers, state.supportUserId]);
