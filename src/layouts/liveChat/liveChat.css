@@ -5,7 +5,7 @@
 .left-users-panel{
 	height: 80vh;
 	border-right: 1px solid #2a3942;
-    background-color: #0a1014;
+    background-color: #e5edea;
 	width:100%;
 	padding: 10px 10px;
 	overflow: auto;
@@ -19,6 +19,16 @@
 	padding: 10px;
 	overflow: auto;
 }
+
+.selected{
+	box-shadow: 1px 1px 3px #000000;
+	background-color: #0dcaf0 !important;
+}
+
+.card-style{
+	margin-bottom: 6px;
+}
+
 .card-title{
 	font-size: 16px;
 	padding: 0px;

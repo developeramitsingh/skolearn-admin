@@ -79,13 +79,13 @@ const LiveChat = () => {
       let data = {msg:msg, user: "support", userId: selectedUser}
       setmessages([...messages, data]);
 
-      socketRef.current.emit('supportMessageBackend', { message: state.msg, supportUserId: 123 })
+      socketRef.current.emit('supportMessageBackend', { message: state.msg, userId: selectedUser, supportUserId: 123 })
       setState({...state, msg:""});
     }
 
     const activeUsersList = activeUsers.map(user => {
       return (
-        <Card key={user.userId} onClick={() => setSelectedUser(user.userId)}>
+        <Card className={`card-style ${selectedUser === user.userId? 'selected': ''}`} key={user.userId} onClick={() => setSelectedUser(user.userId)}>
           <Card.Body>
             <Card.Title>{user.userName}</Card.Title>
           </Card.Body>
