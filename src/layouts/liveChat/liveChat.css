@@ -30,27 +30,24 @@
 }
 
 .status{
-	display: flex;
-	align-items: center;
+	position: absolute;
+	display: inline-block;
+    top: -8px;
+    left: -8px;
+	border-radius: 50%;
+	height: 15px;
+	width: 15px;
 }
 
 .card-style .status-online{
-	display: inline-block;
-	border-radius: 50%;
-	height: 10px;
-	width: 10px;
 	background-color: green;
 	color: green;
-	margin-right: 5px;
+	box-shadow: rgba(0, 0, 0, 0.60) 1.95px 1.95px 2.6px;
 }
 .card-style .status-offline{
-	display: inline-block;
-	border-radius: 50%;
-	height: 10px;
-	width: 10px;
 	background-color: red;
 	color: red;
-	margin-right: 5px;
+	box-shadow: rgba(0, 0, 0, 0.60) 1.95px 1.95px 2.6px;
 }
 .card-title{
 	font-size: 16px;

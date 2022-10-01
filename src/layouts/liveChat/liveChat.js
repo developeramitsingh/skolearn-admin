@@ -137,11 +137,8 @@ const LiveChat = () => {
       return (
         <Card className={`card-style ${selectedUser === user.userId? 'selected': ''}`} key={user.userId} onClick={() => setSelectedUser(user.userId)}>
           <Card.Body>
+            <span className={`status + ${user.offline ? 'status-offline': 'status-online'}`}></span>
             <Card.Title>{user.userName}</Card.Title>
-            <div className='status'>
-              <span className={user.offline ? 'status-offline': 'status-online'}></span>
-              <span>{user.offline ? 'Offline': 'Online' }</span>
-            </div>
           </Card.Body>
         </Card>
       )
