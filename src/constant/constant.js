@@ -1,4 +1,4 @@
-export const BACKEND_URL = 'https://0465-43-239-207-244.in.ngrok.io';
+export const BACKEND_URL = 'http://localhost:5000';
 export const COLORS = {
     blue: '#1E90FF',
     blueGreen: '#25B0B9',
