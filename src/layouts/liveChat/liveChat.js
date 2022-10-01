@@ -9,13 +9,13 @@ import io from 'socket.io-client';
 
 const LiveChat = () => {
     let socketRef = useRef(null);
+    let scrollDiv = useRef(null);
     const [state, setState] = useState({
       supportUserName: '',
       isSupportOnline: false,
       msg:""
     });
     const [activeUsers, setActiveUsers] = useState([
-      
     ]);
 
     const [messages, setmessages] = useState([
@@ -110,7 +110,6 @@ const LiveChat = () => {
         historyState.history.push('/admin');
       }
 
-
       return () => {
         console.info(`-------------> clearning function disconnect`);
         socketRef.current.disconnect();
@@ -144,15 +143,22 @@ const LiveChat = () => {
       )
     });
 
+    const scrollTo = ()=>{
+      console.log(scrollDiv.current);
+      if(!scrollDiv.current){
+        return;
+      }
+      scrollDiv.current.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+    }
     const renderMessage = (selectedUserId, _messages) => {
-      console.info({ selectedUserId, _messages});
       return _messages.filter(msg => msg.userId === selectedUserId).map(msg => {
         let classname = "alignLeft";
         if(msg.user == "support"){
           classname = "alignRight"
         }
+        scrollTo();
         return (
-          <div className='msgCont'>
+          <div className='msgCont' ref={scrollDiv}>
             <Col className={classname}>
               {msg.msg}
             </Col>
@@ -163,7 +169,6 @@ const LiveChat = () => {
 
     return (
       <Container fluid>
-        {console.log(state)}
         <Row>
             <Col className='text-center'>
                 <h1>Live Chat</h1>

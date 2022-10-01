@@ -42,12 +42,14 @@
 .card-style .status-online{
 	background-color: green;
 	color: green;
-	box-shadow: rgba(0, 0, 0, 0.60) 1.95px 1.95px 2.6px;
+	box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+	/* box-shadow: rgba(0, 0, 0, 0.60) 1.95px 1.95px 2.6px; */
 }
 .card-style .status-offline{
 	background-color: red;
 	color: red;
-	box-shadow: rgba(0, 0, 0, 0.60) 1.95px 1.95px 2.6px;
+	box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+	/* box-shadow: rgba(0, 0, 0, 0.60) 1.95px 1.95px 2.6px; */
 }
 .card-title{
 	font-size: 16px;
@@ -124,13 +126,19 @@
 	align-self: flex-start;
 	background-color: aqua;
     padding: 0px 8px 0px 8px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 5px;
+	overflow: auto;
+    max-width: 50%;
+	margin-bottom: 1px;
 }
 .alignRight{
 	align-self: flex-end;
 	background-color: rgb(61, 219, 85);
     padding: 0px 8px 0px 8px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 5px;
+	overflow: auto;
+    max-width: 50%;
+	margin-bottom: 1px;
 }
