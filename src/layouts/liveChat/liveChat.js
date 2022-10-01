@@ -21,12 +21,18 @@ const LiveChat = () => {
     const [messages, setmessages] = useState([
     ]);
 
+    const [selectedUser, setSelectedUser] = useState(null)
+
     const addActiveuser = (userId, userName) => {
+      console.info(activeUsers, { userId, userName });
       const isUser = activeUsers.filter(elem => {
-        return elem.userId === userId
+        console.info({ elem, userId })
+        return elem.userId == userId
       });
 
-      if(!isUser?.length) {
+      console.info({ isUser});
+
+      if(!isUser.length) {
         setActiveUsers(prev => {
           return [ ...prev, { userId, userName }]
         });
@@ -40,7 +46,7 @@ const LiveChat = () => {
 
       socketRef.current.on('supportMessage', ({ userId, userName, message, time, rid}, callBack) => {
           console.info(`message recieced`, message, userId, userName);
-          let data = {msg: message, user: "app"};
+          let data = {msg: message, user: "app", userId: userId, supportUserId: selectedUser};
           
           addActiveuser(userId, userName);
 
@@ -60,7 +66,7 @@ const LiveChat = () => {
       return () => {
         socketRef.current.disconnect();
       }
-    }, []);
+    }, [activeUsers]);
 
     function storeMsg(e){
       const {name, value} = e.target;
@@ -70,7 +76,7 @@ const LiveChat = () => {
     function handleMessages(e) {
       //console.log(" ****************** ");
       let msg = state.msg;
-      let data = {msg:msg, user: "support"}
+      let data = {msg:msg, user: "support", userId: selectedUser}
       setmessages([...messages, data]);
 
       socketRef.current.emit('supportMessageBackend', { message: state.msg, supportUserId: 123 })
@@ -79,28 +85,30 @@ const LiveChat = () => {
 
     const activeUsersList = activeUsers.map(user => {
       return (
-        <Card>
+        <Card key={user.userId} onClick={() => setSelectedUser(user.userId)}>
           <Card.Body>
-            
             <Card.Title>{user.userName}</Card.Title>
           </Card.Body>
         </Card>
       )
     });
 
-    const renderMessage = messages.map(msg => {
-      let classname = "alignLeft";
-      if(msg.user == "support"){
-        classname = "alignRight"
-      }
-      return (
-        <div className='msgCont'>
-          <Col className={classname}>
-            {msg.msg}
-          </Col>
-        </div>
-      )
-    });
+    const renderMessage = (selectedUserId, _messages) => {
+      console.info({ selectedUserId, _messages});
+      return _messages.filter(msg => msg.userId === selectedUserId).map(msg => {
+        let classname = "alignLeft";
+        if(msg.user == "support"){
+          classname = "alignRight"
+        }
+        return (
+          <div className='msgCont'>
+            <Col className={classname}>
+              {msg.msg}
+            </Col>
+          </div>
+        )
+      });
+    }   
 
     return (
       <Container fluid>
@@ -124,7 +132,7 @@ const LiveChat = () => {
 
           <Col sm={9} className="chat-section">
             <div className='right-chat-window'>
-              {renderMessage}
+              {renderMessage(selectedUser, messages)}
             </div>
             <Row>
               <InputGroup className="">
@@ -132,7 +140,7 @@ const LiveChat = () => {
                   placeholder="Type your message"
                   aria-label="Message"
                 />
-                <Button variant="primary" disabled={!state.msg} id="button-addon2" onClick={(e) =>handleMessages(e)}>
+                <Button variant="primary" disabled={!state.msg || !selectedUser} id="button-addon2" onClick={(e) =>handleMessages(e)}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi send-icon bi-send-fill" viewBox="0 0 16 16">
                       <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
                   </svg>
