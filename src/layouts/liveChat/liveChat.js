@@ -91,7 +91,7 @@ const LiveChat = () => {
 
       socketRef.current.emit('supportConnectedFromLiveChat', { supportUserName: state.supportUserName, supportUserId: state.supportUserId });
 
-      socketRef.current.on('supportMessage', ({ userId, userName, message, time, rid}, callBack) => {
+      socketRef.current.on('supportMessage' + state.supportUserId, ({ userId, userName, message, time, rid}, callBack) => {
           console.info(`message recieced`, message, userId, userName);
           let data = {msg: message, user: "app", userId: userId, supportUserId: selectedUser};
           
