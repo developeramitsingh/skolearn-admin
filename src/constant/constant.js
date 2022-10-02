@@ -1,4 +1,5 @@
-export let BACKEND_URL = 'http://localhost:5000';
+export let BACKEND_URL = 'https://skolearn.herokuapp.com';
+console.info({ env: process.env.NODE_ENV });
 
 if (process.env.NODE_ENV === 'prod') {
     BACKEND_URL = 'https://skolearn.herokuapp.com';
