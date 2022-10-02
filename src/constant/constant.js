@@ -1,4 +1,11 @@
-export const BACKEND_URL = 'http://localhost:5000';
+export let BACKEND_URL = 'http://localhost:5000';
+
+if (process.env.NODE_ENV === 'prod') {
+    BACKEND_URL = 'https://skolearn.herokuapp.com';
+} else if(process.env.NODE_ENV === 'staging') {
+    BACKEND_URL = 'https://skolearn.herokuapp.com';
+}
+
 export const COLORS = {
     blue: '#1E90FF',
     blueGreen: '#25B0B9',
