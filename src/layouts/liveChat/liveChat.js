@@ -13,7 +13,7 @@ const LiveChat = () => {
     const [state, setState] = useState({
       supportUserName: '',
       isSupportOnline: false,
-      msg:""
+      msg: ""
     });
     const [activeUsers, setActiveUsers] = useState([
     ]);
