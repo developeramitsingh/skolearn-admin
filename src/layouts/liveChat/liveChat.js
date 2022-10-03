@@ -6,6 +6,8 @@ import { historyState } from '../../constant/global';
 import { userService } from '../../services';
 import './liveChat.css';
 import io from 'socket.io-client';
+import addNotification from 'react-push-notification';
+import { Notifications } from 'react-push-notification';
 
 const LiveChat = () => {
     let socketRef = useRef(null);
@@ -23,7 +25,7 @@ const LiveChat = () => {
 
     const [selectedUser, setSelectedUser] = useState(null)
 
-    const addActiveuser = (userId, userName) => {
+    const addActiveUser = (userId, userName) => {
       console.info(activeUsers, { userId, userName });
       const isUser = activeUsers.filter(elem => {
         console.info({ elem, userId })
@@ -33,16 +35,36 @@ const LiveChat = () => {
       console.info({ isUser});
 
       //user is new then add to activeUSer list
-      if(!isUser.length) {
+      if (!isUser.length) {
         setActiveUsers(prev => {
-          return [ ...prev, { userId, userName }]
+          return [ { userId, userName, newMsgCount: 1 }, ...prev]
         });
       } else {
         // make old user online
         setActiveUsers(prev => {
-          return [ ...prev]?.map(usr => { if (usr.userId === userId) { usr.offline = false } return usr })
+          const latestUser = prev?.filter(elem => elem.userId === userId)[0];
+          const arr = [
+            { ...latestUser, newMsgCount: latestUser.newMsgCount + 1 || 1}, 
+            ...prev?.filter(elem => elem.userId !== userId)
+          ]
+          return arr;
         });
       }
+    }
+
+    const setSelectedUserUser = (userId) => {
+      setSelectedUser(userId);
+
+      setActiveUsers(prev => {
+        const arr = [...prev].map(elem => {
+          if (elem.userId === userId){
+            elem.newMsgCount = null;
+          }
+
+          return elem;
+        })
+        return arr;
+      });
     }
 
     const getUser = async () => {
@@ -59,7 +81,34 @@ const LiveChat = () => {
       } catch (err){
           console.error(`errror in getUser: ${err}`);
       }
-  }
+    }
+
+    const sendNotifiToNewUser = async (userId, userName, message) => {
+      try {
+        const newUserFound = activeUsers.filter(usr => usr.userId === userId);
+
+        let data = {}
+        if (!newUserFound?.length) {
+          data = {
+            title: `${userName} Joined Chat`,
+            subtitle: 'A new user has joined chat',
+            message: 'A new user has joined',
+            native:true
+          };
+        } else {
+          data = {
+            title: `New Message from ${userName}`,
+            subtitle: message,
+            message: message,
+            native:true
+          }
+        }
+
+        addNotification(data);
+      } catch (err){
+          console.error(`errror in getUser: ${err}`);
+      }
+    }
 
     useEffect(() => {
       getUser();
@@ -94,8 +143,11 @@ const LiveChat = () => {
       socketRef.current.on('supportMessage' + state.supportUserId, ({ userId, userName, message, time, rid}, callBack) => {
           console.info(`message recieced`, message, userId, userName);
           let data = {msg: message, user: "app", userId: userId, supportUserId: selectedUser};
+
+          // sends the notification for users
+          sendNotifiToNewUser(userId, userName, message);
           
-          addActiveuser(userId, userName);
+          addActiveUser(userId, userName);
 
           setmessages((prev) => {
               return [...prev, data]
@@ -132,12 +184,18 @@ const LiveChat = () => {
     }
 
     const activeUsersList = activeUsers.map(user => {
-      console.log(user);
       return (
-        <Card className={`card-style ${selectedUser === user.userId? 'selected': ''}`} key={user.userId} onClick={() => setSelectedUser(user.userId)}>
+        <Card className={`card-style ${selectedUser === user.userId? 'selected': ''}`} key={user.userId} onClick={() => setSelectedUserUser(user.userId)}>
           <Card.Body>
             <span className={`status + ${user.offline ? 'status-offline': 'status-online'}`}></span>
-            <Card.Title>{user.userName}</Card.Title>
+            <Card.Title>
+              {user.userName}
+              {
+                user.newMsgCount 
+                  ? <span className='newMsgCount'>{user.newMsgCount}</span>
+                  : null
+              }
+            </Card.Title>
           </Card.Body>
         </Card>
       )
@@ -169,6 +227,7 @@ const LiveChat = () => {
 
     return (
       <Container fluid>
+        <Notifications />
         <Row>
             <Col className='text-center'>
                 <h1>Live Chat</h1>
