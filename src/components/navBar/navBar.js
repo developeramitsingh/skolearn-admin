@@ -6,7 +6,7 @@ import { userService } from '../../services';
 const NavBar = () => {
   const handleLogout = () => {
     userService.dologout();
-    historyState.history.push('/admin');
+    historyState.history.push('/');
   }
   return (
     <>

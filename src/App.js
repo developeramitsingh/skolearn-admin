@@ -23,7 +23,7 @@ function App(props) {
               <Home/>
             </Route>
 
-            <Route path ="/admin">
+            <Route exact path ="/">
               <Login/>
             </Route>
           </Switch>
