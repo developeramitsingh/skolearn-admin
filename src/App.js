@@ -4,6 +4,7 @@ import Login from './layouts/login/login';
 import { useHistory, Switch, Route } from 'react-router-dom';
 import { historyState } from "./constant/global";
 import LiveChat from './layouts/liveChat/liveChat';
+import Recordings from './layouts/recordings/recordings';
 import Home from './layouts/home/home';
 
 function App(props) { 
@@ -21,6 +22,10 @@ function App(props) {
 
             <Route exact path ="/admin/home">
               <Home/>
+            </Route>
+
+            <Route exact path ="/recordings">
+              <Recordings/>
             </Route>
 
             <Route exact path ="/">

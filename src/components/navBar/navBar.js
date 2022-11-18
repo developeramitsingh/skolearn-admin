@@ -24,6 +24,10 @@ const NavBar = () => {
             </Nav.Item>
 
             <Nav.Item className='m-3'>
+              <NavLink to='/recordings'>Recordings</NavLink>
+            </Nav.Item>
+
+            <Nav.Item className='m-3'>
               <Button onClick={handleLogout}>Logout</Button>
             </Nav.Item>
           </Nav>

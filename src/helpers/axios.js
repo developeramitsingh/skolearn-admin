@@ -13,7 +13,7 @@ class Axios {
 
     get(options) {
         options.method = "get";
-        //options.headers = options.headers ? options.headers : this.getHeaders();
+        options.headers = options.headers ? options.headers : this.getHeaders();
         return new Promise((resolve, reject) => {
           axios
             .get(options.url, options)
@@ -101,8 +101,9 @@ class Axios {
       }
 
     getHeaders() {
+        const token = localStorage.getItem('token');
         return {
-          Authorization: `Bearer`,
+          Authorization: token ? `Bearer ${token}` : null,
         };
     }
 
